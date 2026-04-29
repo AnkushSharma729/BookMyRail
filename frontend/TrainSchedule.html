@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookMyRail – Train Schedule</title>
+  <img src="img/logo 1.png" alt="logo" height="150px">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: #0077b6;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+    .schedule-form {
+      background: #fff;
+      max-width: 550px;
+      margin: 40px auto;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .schedule-form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .schedule-form input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .schedule-form button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #0077b6;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .schedule-form button:hover {
+      background: #005f86;
+    }
+    #result {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    table th {
+      background: #0077b6;
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+  <script type="module" src="JS/TrainSchedule.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>BookMyRail – Train Schedule</h1>
+  </header>
+
+  <main>
+    <form id="scheduleForm" class="schedule-form">
+      <label for="trainNumber">Train Number</label>
+      <input type="text" id="trainNumber" name="trainNumber" placeholder="e.g. 12627" required>
+
+      <label for="trainName">Train Name</label>
+      <input type="text" id="trainName" name="trainName" placeholder="e.g. Karnataka Express" required>
+
+      <label for="date">Travel Date</label>
+      <input type="date" id="date" name="date" required>
+
+      <button type="submit">Check Schedule</button>
+    </form>
+
+    <div id="result"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BookMyRail. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

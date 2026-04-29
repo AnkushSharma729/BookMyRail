@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check PNR Status – BookMyRail</title>
+<link rel="stylesheet" href="CSS/PNR.css">
+<script type="module" src="JS/PNR.js"></script>
+</head>
+
+<img src="img/logo.png" alt="logo" height="100px" >
+
+
+<body>
+<header>
+  <h1>Check PNR Status</h1>
+</header>
+<div class="container">
+  <form id="pnrForm">
+    <label for="pnr">Enter 10-digit PNR Number</label>
+    <input type="text" id="pnr" name="pnr" maxlength="10" pattern="\d{10}" required placeholder="e.g. 1234567890">
+    <button type="submit">Check Status</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+ <footer>
+      <div>© <strong>BOOKMYRAIL</strong> — Secure IRCTC train booking</div>
+      <div class="muted">Privacy • Refund Policy • Terms</div>
+    </footer>
+  </div>
+   
+</body>
+</html>

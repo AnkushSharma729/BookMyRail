@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BookMyRail – Profile Account</title>
+<img src="img/logo 1.png" alt="logo" height="150px">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f7f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+
+  header {
+    background: #0077b6;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  form {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .flex-row {
+    display: flex;
+    gap: 15px;
+  }
+  .flex-row .form-group {
+    flex: 1;
+  }
+
+  .checkbox-group {
+    margin-top: 5px;
+  }
+
+  .captcha-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .captcha-display {
+    background: #0077b6;
+    color: #fff;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+  }
+
+  button {
+    background: #0077b6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+  }
+  button:hover {
+    background: #005f86;
+  }
+</style>
+<script type="module" src="JS/Profile.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>BookMyRail – Profile Account</h1>
+</header>
+
+<form id="profileForm">
+  <h2>User Information</h2>
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email ID</label>
+      <input type="email" id="email" required>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" required>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" required>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select id="gender" required>
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" required>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="occupation">Occupation</label>
+      <input type="text" id="occupation">
+    </div>
+    <div class="form-group">
+      <label for="mobile">Mobile Number</label>
+      <input type="text" id="mobile" maxlength="10" required>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="nationality">Nationality</label>
+      <input type="text" id="nationality" required>
+    </div>
+    <div class="form-group">
+      <label for="marital">Marital Status</label>
+      <select id="marital">
+        <option value="">Select</option>
+        <option>Single</option>
+        <option>Married</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <h2>Address Details</h2>
+  <div class="form-group">
+    <label for="city">City</label>
+    <input type="text" id="city" required>
+  </div>
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="state">State</label>
+      <input type="text" id="state" required>
+    </div>
+    <div class="form-group">
+      <label for="pincode">Pin Code</label>
+      <input type="text" id="pincode" maxlength="6" required>
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" id="country" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" maxlength="10">
+    </div>
+  </div>
+
+  <div class="checkbox-group">
+    <label>
+      <input type="checkbox" id="sameAddress"> Present address is same as permanent address
+    </label>
+  </div>
+
+  <h2>Security</h2>
+  <div class="form-group captcha-box">
+    <span class="captcha-display" id="captchaCode"></span>
+    <button type="button" id="refreshCaptcha" style="width:auto;">Refresh</button>
+  </div>
+  <div class="form-group">
+    <label for="captchaInput">Enter Captcha Code</label>
+    <input type="text" id="captchaInput" required>
+  </div>
+
+  <button type="submit">Submit Profile</button>
+</form>
+
+</body>
+</html>

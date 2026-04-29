@@ -1,0 +1,93 @@
+/* ====== Base Reset & Typography ====== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f7fa;
+  color: #1e293b;
+  padding: 40px 20px;
+  line-height: 1.6;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #0b63bf;
+}
+
+/* ====== Form Container ====== */
+form {
+  max-width: 500px;
+  background: #ffffff;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ====== Labels & Inputs ====== */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #334155;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #f9fafb;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #0b63bf;
+  box-shadow: 0 0 4px rgba(11, 99, 191, 0.4);
+}
+
+/* ====== Submit Button ====== */
+button[type="submit"] {
+  width: 100%;
+  background: #0b63bf;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background: #084a8a;
+}
+
+/* ====== Small Screen Adjustments ====== */
+@media (max-width: 500px) {
+  body {
+    padding: 20px 10px;
+  }
+  form {
+    padding: 20px;
+  }
+}
+
+.center-logo {
+    display: block;
+    margin: 0 auto; /* horizontal centering */
+}

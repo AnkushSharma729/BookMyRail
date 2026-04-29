@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookMyRail – Track My Train</title>
+  <img src="img/logo 1.png" alt="logo" height="150px">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fb;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: #0077b6;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+    .track-form {
+      background: #fff;
+      max-width: 550px;
+      margin: 40px auto;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .track-form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .track-form select,
+    .track-form input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .track-form button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #0077b6;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .track-form button:hover {
+      background: #005f86;
+    }
+    #result {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    table th {
+      background: #0077b6;
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BookMyRail – Track My Train</h1>
+  </header>
+
+  <main>
+    <form id="trackForm" class="track-form">
+      <label for="train">Select Train</label>
+      <select id="train" required>
+        <option value="">-- Choose Train --</option>
+        <option value="12627|Karnataka Express">12627 – Karnataka Express</option>
+        <option value="12951|Mumbai Rajdhani">12951 – Mumbai Rajdhani</option>
+        <option value="12002|Shatabdi Express">12002 – Shatabdi Express</option>
+        <option value="12245|Howrah Yeshvantpur Duronto">12245 – Howrah Yeshvantpur Duronto</option>
+        <option value="12301|Rajdhani Express">12301 – Rajdhani Express</option>
+        <option value="12423|Rajdhani Bangalore">12423 – Rajdhani Bangalore</option>
+      </select>
+
+      <label for="date">Travel Date</label>
+      <input type="date" id="date" required>
+
+      <button type="submit">Track Train</button>
+    </form>
+
+    <div id="result"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BookMyRail. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("trackForm");
+      const resultDiv = document.getElementById("result");
+
+      // Example mock live status data
+      const mockStatus = [
+        { station: "New Delhi", arrival: "—", departure: "20:45", status: "Departed on time" },
+        { station: "Agra Cantt", arrival: "23:05", departure: "23:15", status: "On Time" },
+        { station: "Jhansi Jn", arrival: "02:50", departure: "03:00", status: "On Time" },
+        { station: "Bhopal Jn", arrival: "06:00", departure: "06:05", status: "Delayed 10 min" },
+        { station: "Nagpur", arrival: "12:20", departure: "12:25", status: "Expected On Time" }
+      ];
+
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const trainData = document.getElementById("train").value;
+        const travelDate = document.getElementById("date").value;
+
+        if (!trainData || !travelDate) {
+          alert("Please select a train and date.");
+          return;
+        }
+
+        const [trainNumber, trainName] = trainData.split("|");
+
+        let html = `
+          <h2>Live Running Status</h2>
+          <p><strong>Train:</strong> ${trainNumber} – ${trainName}<br>
+             <strong>Date:</strong> ${travelDate}</p>
+          <table>
+            <tr>
+              <th>Station</th>
+              <th>Arrival</th>
+              <th>Departure</th>
+              <th>Status</th>
+            </tr>`;
+
+        mockStatus.forEach(stop => {
+          html += `<tr>
+                    <td>${stop.station}</td>
+                    <td>${stop.arrival}</td>
+                    <td>${stop.departure}</td>
+                    <td>${stop.status}</td>
+                  </tr>`;
+        });
+
+        html += `</table>`;
+        resultDiv.innerHTML = html;
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BOOKMYRAIL</title>
+  <link rel="stylesheet" href="CSS/Style.css" />
+  <script type="module" src="JS/Script.js" defer></script>
+</head>
+<body>
+  <!-- Top Utility Bar -->
+  <div class="topbar">
+    <div class="container flex between center">
+      <div class="top-links">
+        <a href="PNR.html">PNR Status</a>
+        <a href="TrainSchedule.html">Train Schedule</a>
+        <a href="track.html">Live Status</a>
+        <a href="cancellation.html">Cancel/Reschedule</a>
+      </div>
+      <div class="top-cta">
+        <a href="Signup.html" class="link" id="loginLink">Login</a>
+        <a href="Admin.html" class="link">Admin</a>
+        <span class="hotline">Help: <a href="tel:+917291857888">7291857888</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navbar -->
+  <nav class="navbar">
+    <div class="container nav-wrap">
+      <div class="brand">
+        <img src="img/logo 1.png" alt="BOOKMYRAIL logo" />
+        <div class="brand-text">
+          <strong>BOOKMYRAIL</strong>
+          <small>Secure IRCTC booking partner*</small>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="RESERVATIONS.html">Reservations</a>
+        <a href="https://www.goindigo.in/?linkNav=Logo%7C%7CHeader">Flights</a>
+        <a href="https://www.redbus.in/">Bus</a>
+        <a href="https://www.trivago.in/">Hotels</a>
+
+        <div class="dropdown">
+          <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">More ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="Profile.html" role="menuitem">Profile</a>
+            <a href="login.html" role="menuitem">Signup</a>
+            <a href="chart.html" role="menuitem">Reservation Chart</a>
+            <a href="About.html" role="menuitem">About / Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero + Search -->
+  <section class="hero">
+    <img src="img/train image.jpg" alt="Express train" class="hero-bg" />
+    <div class="container hero-inner">
+      <h1>Book IRCTC train tickets with confidence</h1>
+      <p class="subtitle">Prediction powered suggestions • Secure UPI payments • 24×7 support</p>
+
+      <form id="searchForm" class="search-card" novalidate>
+        <div class="field-group">
+          <label for="from">From</label>
+          <div class="input-with-icon">
+            <input id="from" name="from" placeholder="e.g., Mumbai (CSTM)" autocomplete="off" required />
+            <button class="swap" type="button" aria-label="Swap stations" title="Swap">
+              ⇅
+            </button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="to">To</label>
+          <input id="to" name="to" placeholder="e.g., New Delhi (NDLS)" autocomplete="off" required />
+        </div>
+
+        <div class="field-group">
+          <label for="date">Journey Date</label>
+          <input id="date" name="date" type="date" required />
+        </div>
+
+        <div class="field-group">
+          <label for="class">Class</label>
+          <select id="class" name="class">
+            <option>SL - Sleeper</option>
+            <option>3A - Third AC</option>
+            <option>2A - Second AC</option>
+            <option>1A - First AC</option>
+            <option>CC - Chair Car</option>
+            <option>2S - Second Sitting</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="quota">Quota</label>
+          <select id="quota" name="quota">
+            <option>General</option>
+            <option>Tatkal</option>
+            <option>Premium Tatkal</option>
+            <option>Ladies</option>
+            <option>Senior Citizen</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Search Trains</button>
+          <a class="btn btn-outline" href="PNR.html">Check PNR</a>
+        </div>
+
+        <div class="form-errors" aria-live="polite"></div>
+      </form>
+
+      <div class="quick-pills">
+        <a class="pill" href="#routes">Popular routes</a>
+        <a class="pill" href="https://trackmytrain.co.in/">Running status</a>
+        <a class="pill" href="TrainSchedule.html">Train schedule</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Benefits -->
+  <section class="container grid-4 features">
+    <article class="card reveal">
+      <h3>Smart confirmations</h3>
+      <p>Waitlist prediction & same-train alternates improve your odds.</p>
+    </article>
+    <article class="card reveal">
+      <h3>UPI & secure pay</h3>
+      <p>Fast payments with leading UPI apps and cards. Instant refunds.</p>
+    </article>
+    <article class="card reveal">
+      <h3>Free cancellation*</h3>
+      <p>Opt-in protection to get full refunds on eligible tickets.</p>
+    </article>
+    <article class="card reveal">
+      <h3>Live alerts</h3>
+      <p>Real-time running status & notifications for your trains.</p>
+    </article>
+  </section>
+
+  <!-- Top Routes -->
+  <section id="routes" class="container routes">
+    <header class="section-head">
+      <h2>Top Train Routes</h2>
+      <p class="muted">Jump into popular corridors across India</p>
+    </header>
+
+    <div class="grid-3">
+      <div class="card reveal">
+        <h3><span class="dot"></span>To Bengaluru</h3>
+        <ul>
+          <li>Chennai</li><li>Mysore</li><li>Hyderabad</li><li>New Delhi</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3><span class="dot"></span>To New Delhi</h3>
+        <ul>
+          <li>Patna</li><li>Varanasi</li><li>Mumbai</li><li>Lucknow</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3><span class="dot"></span>To Goa</h3>
+        <ul>
+          <li>Mumbai</li><li>New Delhi</li><li>Bengaluru</li><li>Pune</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3><span class="dot"></span>To Hyderabad</h3>
+        <ul>
+          <li>New Delhi</li><li>Mumbai</li><li>Chennai</li><li>Bengaluru</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3><span class="dot"></span>To Mumbai</h3>
+        <ul>
+          <li>New Delhi</li><li>Pune</li><li>Ahmedabad</li><li>Surat</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <h3><span class="dot"></span>To Chennai</h3>
+        <ul>
+          <li>Bengaluru</li><li>Coimbatore</li><li>Madurai</li><li>Salem</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Strip -->
+  <section class="cta-strip">
+    <div class="container cta-wrap">
+      <div>
+        <h3>Ready to ride?</h3>
+        <p class="muted">Search trains, compare classes, and book in minutes.</p>
+      </div>
+      <a class="btn btn-primary" href="Reservations.html">Book Now</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container foot-grid">
+      <div class="about">
+        <img src="img/logo 1.png" alt="logo" />
+        <p>© <strong>BOOKMYRAIL</strong> — Secure IRCTC train booking</p>
+        <small class="muted">Privacy • Refund Policy • Terms</small>
+      </div>
+      <div class="foot-links">
+        <a href="PNR.html">PNR Status</a>
+        <a href="TrainSchedule.html">Schedule</a>
+        <a href="track.html">Live Status</a>
+        <a href="About.html">About / Contact</a>
+      </div>
+      <div class="foot-links">
+        <a href="https://www.goindigo.in/?linkNav=Logo%7C%7CHeader">Flights</a>
+        <a href="https://www.redbus.in/">Bus</a>
+        <a href="https://www.trivago.in/">Hotels</a>
+        <a href="chart.html">Charts</a>
+      </div>
+      <div class="newsletter">
+        <label for="nl" class="muted">Get fare drops & alerts</label>
+        <div class="nl-row">
+          <input id="nl" type="email" placeholder="your@email.com" />
+          <button class="btn btn-outline" id="nlBtn">Subscribe</button>
+        </div>
+        <div id="nlMsg" class="nl-msg" aria-live="polite"></div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

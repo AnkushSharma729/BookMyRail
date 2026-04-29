@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookMyRail – Reservation Chart</title>
+  <img src="img/logo 1.png" alt="logo" height="150px">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f8fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: #0077b6;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    .tab-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .tab-buttons {
+      display: flex;
+      border-bottom: 2px solid #0077b6;
+    }
+
+    .tab-buttons button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      background: #e0e0e0;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .tab-buttons button.active {
+      background: #0077b6;
+      color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #0077b6;
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BookMyRail – Reservation Chart</h1>
+  </header>
+
+  <div class="tab-container">
+    <div class="tab-buttons">
+      <button class="tab-link active" data-tab="upcoming">Upcoming Rides</button>
+      <button class="tab-link" data-tab="completed">Completed Rides</button>
+      <button class="tab-link" data-tab="cancelled">Cancelled Rides</button>
+    </div>
+
+    <!-- Upcoming Rides -->
+    <div id="upcoming" class="tab-content active">
+      <h2>Upcoming Rides</h2>
+      <table>
+        <tr>
+          <th>PNR</th>
+          <th>Train No</th>
+          <th>Train Name</th>
+          <th>Date</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>9876543210</td>
+          <td>12627</td>
+          <td>Karnataka Express</td>
+          <td>2025-10-10</td>
+          <td>New Delhi</td>
+          <td>Bengaluru</td>
+          <td>Confirmed</td>
+        </tr>
+        <tr>
+          <td>9876501234</td>
+          <td>12951</td>
+          <td>Mumbai Rajdhani</td>
+          <td>2025-10-12</td>
+          <td>New Delhi</td>
+          <td>Mumbai</td>
+          <td>Waiting List</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Completed Rides -->
+    <div id="completed" class="tab-content">
+      <h2>Completed Rides</h2>
+      <table>
+        <tr>
+          <th>PNR</th>
+          <th>Train No</th>
+          <th>Train Name</th>
+          <th>Date</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>8765432109</td>
+          <td>12002</td>
+          <td>Shatabdi Express</td>
+          <td>2025-09-20</td>
+          <td>Bengaluru</td>
+          <td>Chennai</td>
+          <td>Completed</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Cancelled Rides -->
+    <div id="cancelled" class="tab-content">
+      <h2>Cancelled Rides</h2>
+      <table>
+        <tr>
+          <th>PNR</th>
+          <th>Train No</th>
+          <th>Train Name</th>
+          <th>Date</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>7654321098</td>
+          <td>12245</td>
+          <td>Howrah Duronto</td>
+          <td>2025-09-18</td>
+          <td>Howrah</td>
+          <td>Yeshvantpur</td>
+          <td>Cancelled</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 BookMyRail. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Tab switching logic
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".tab-link");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          contents.forEach(c => c.classList.remove("active"));
+
+          tab.classList.add("active");
+          const target = tab.getAttribute("data-tab");
+          document.getElementById(target).classList.add("active");
+        });
+      });
+    });
+  </script>
+</body>
+</html>

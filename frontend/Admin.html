@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BookMyRail — Admin + Payment Simulation</title>
+<style>
+  :root{
+    --accent:#0b63bf; --muted:#6b7280; --bg:#f4f7fb; --card:#fff;
+  }
+  body{font-family:Inter,system-ui,Arial;background:var(--bg);margin:0;color:#0f172a}
+  header{background:linear-gradient(90deg,var(--accent),#69a7e8);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+  header img{height:36px;border-radius:6px}
+  .layout{display:flex;min-height:calc(100vh - 64px)}
+  nav{width:260px;padding:18px;background:#fff;border-right:1px solid #e6eefc}
+  nav .menu button{width:100%;text-align:left;padding:10px;border:0;background:transparent;cursor:pointer;border-radius:6px;color:var(--accent);font-weight:600}
+  nav .menu button.active{background:#e8f2ff}
+  main{flex:1;padding:18px}
+  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(15,23,42,0.04);margin-bottom:14px}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:8px;border-bottom:1px solid #f0f4fb;text-align:left}
+  .btn{padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-ghost{background:transparent;border:1px solid #e6eefc;color:var(--accent)}
+  .btn-danger{background:#dc2626;color:#fff}
+  .status-badge{padding:6px 8px;border-radius:999px;font-weight:700;font-size:12px}
+  .status-paid{background:#e7f9ef;color:#047857}
+  .status-pending{background:#fff7ed;color:#b45309}
+  .modal-back{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:999}
+  .modal{background:#fff;padding:16px;border-radius:10px;max-width:520px;width:100%}
+  .field{margin-bottom:8px}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+  input,select{width:100%;padding:8px;border:1px solid #e6eefc;border-radius:6px}
+  .row{display:flex;gap:8px}
+  .row > *{flex:1}
+  footer{padding:12px;text-align:center;color:var(--muted);font-size:13px}
+  @media (max-width:900px){nav{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="img/logo 1.png" alt="logo">
+  <h2>BOOKMYRAIL — Admin & Payment Demo</h2>
+</header>
+
+<div class="layout">
+  <nav aria-label="main nav">
+    <div style="margin-bottom:12px">
+      <strong>Admin</strong><div style="font-size:13px;color:var(--muted)">demo@bookmyrail</div>
+    </div>
+    <div class="menu">
+      <button data-panel="overview" class="active">Overview</button>
+      <button data-panel="trains">Trains</button>
+      <button data-panel="bookings">Bookings</button>
+      <button data-panel="reports">Reports</button>
+      <button data-panel="security">Security</button>
+    </div>
+    <div style="margin-top:12px">
+      <button id="btnLogout" class="btn btn-ghost">Logout</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- OVERVIEW -->
+    <section id="panel-overview" class="card">
+      <h3>Overview</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+        <div class="card" style="flex:1;min-width:160px">
+          <div style="font-size:14px;color:var(--muted)">Total Trains</div>
+          <div id="statTrains" style="font-weight:700">0</div>
+        </div>
+        <div class="card" style="flex:1;min-width:160px">
+          <div style="font-size:14px;color:var(--muted)">Total Bookings</div>
+          <div id="statBookings" style="font-weight:700">0</div>
+        </div>
+        <div class="card" style="flex:1;min-width:160px">
+          <div style="font-size:14px;color:var(--muted)">Revenue</div>
+          <div id="statRevenue" style="font-weight:700">₹0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAINS -->
+    <section id="panel-trains" class="card hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3>Trains</h3>
+        <button id="btnAddTrain" class="btn btn-primary">Add Train</button>
+      </div>
+      <table style="margin-top:12px">
+        <thead><tr><th>ID</th><th>Name</th><th>Route</th><th>Fare</th><th>Quotas</th><th>Action</th></tr></thead>
+        <tbody id="trainsT"></tbody>
+      </table>
+    </section>
+
+    <!-- BOOKINGS -->
+    <section id="panel-bookings" class="card hidden">
+      <h3>Bookings</h3>
+      <table style="margin-top:12px">
+        <thead><tr><th>Booking</th><th>Train</th><th>Route</th><th>Fare</th><th>Date</th><th>PNR</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="bookingsT"></tbody>
+      </table>
+
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="btnSeedBooking" class="btn btn-ghost">Seed Pending Payment</button>
+        <button id="btnSeedPaid" class="btn btn-ghost">Seed Paid Booking</button>
+        <button id="btnClear" class="btn btn-ghost">Clear bookings</button>
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="panel-reports" class="card hidden">
+      <h3>Reports</h3>
+      <div style="margin-top:10px">
+        <div id="reportText" class="small muted">—</div>
+      </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section id="panel-security" class="card hidden">
+      <h3>Security (Demo)</h3>
+      <p class="small muted">Create / Reset admin password (stored hashed). Data encryption demo for bookings (AES-GCM) — demo only.</p>
+      <div style="margin-top:12px;max-width:520px">
+        <div class="field"><label>New Admin Password</label><input id="newPass" placeholder="set admin password"></div>
+        <div style="display:flex;gap:8px"><button id="btnSetPass" class="btn btn-primary">Set Password</button><button id="btnResetKey" class="btn btn-ghost">Reset Encryption Key</button></div>
+        <div style="margin-top:12px;color:var(--muted)"><strong>Note:</strong> This demo uses client-side hashing and an encryption key stored locally to encrypt booking data. In production, do server-side auth and server-managed keys.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>BookMyRail — Payment Simulation & PNR demo (frontend only)</footer>
+
+<!-- modal root -->
+<div id="modalRoot"></div>
+
+<script>
+/* ---------- Data + state ---------- */
+const STORAGE_KEY = 'bm_demo_v2';
+let state = loadState();
+
+/* load sample data if empty */
+function loadState(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw){
+    const s = {
+      trains: [
+        {id:'12651', name:'Rajdhani', from:'Mumbai', to:'Delhi', fare:1200, quotas:{general:200, ladies:30, senior:20, tatkal:10}},
+        {id:'16023', name:'Shatabdi', from:'Pune', to:'Mumbai', fare:450, quotas:{general:150, ladies:20, senior:15, tatkal:5}}
+      ],
+      bookings: [], // will be encrypted in storage under bookings_enc
+      bookings_enc: null,
+      settings:{ adminHash: null, encSalt: null }
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+    return s;
+  }
+  return JSON.parse(raw);
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* ---------- Crypto helpers (Web Crypto API) ---------- */
+/* Hash password (SHA-256 hex) */
+async function hashPass(pass){
+  const enc = new TextEncoder().encode(pass);
+  const digest = await crypto.subtle.digest('SHA-256', enc);
+  return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+/* Generate random key material and salt for AES-GCM and store base64 */
+function b64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))) }
+function fromB64(s){ return Uint8Array.from(atob(s), c=>c.charCodeAt(0)) }
+
+/* deriveKey from passphrase + salt using PBKDF2 */
+async function deriveKey(pass, saltB64){
+  const salt = fromB64(saltB64);
+  const passKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations: 100000, hash:'SHA-256'}, passKey, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  return key;
+}
+
+/* encrypt JSON to base64 string with AES-GCM */
+async function encryptJSON(key, obj){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const plain = new TextEncoder().encode(JSON.stringify(obj));
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, plain);
+  return b64(iv) + ':' + b64(ct);
+}
+/* decrypt base64 string to object */
+async function decryptJSON(key, cipherStr){
+  if(!cipherStr) return null;
+  const [ivB64, ctB64] = cipherStr.split(':');
+  const iv = fromB64(ivB64);
+  const ct = fromB64(ctB64);
+  const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct);
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
+/* ---------- Simple PNR generator ---------- */
+function genPNR(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let p='';
+  for(let i=0;i<8;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+  // attach timestamp part for uniqueness
+  p += String(Date.now()).slice(-4);
+  return p;
+}
+
+/* ---------- UI wiring & panels ---------- */
+const panels = {
+  overview: document.getElementById('panel-overview'),
+  trains: document.getElementById('panel-trains'),
+  bookings: document.getElementById('panel-bookings'),
+  reports: document.getElementById('panel-reports'),
+  security: document.getElementById('panel-security')
+};
+function showPanel(name){
+  Object.keys(panels).forEach(k=> panels[k].classList.toggle('hidden', k!==name));
+  document.querySelectorAll('nav .menu button').forEach(b=> b.classList.toggle('active', b.dataset.panel===name));
+  renderAll();
+}
+document.querySelectorAll('nav .menu button').forEach(b=> b.onclick = ()=> showPanel(b.dataset.panel || b.textContent.toLowerCase()));
+showPanel('overview');
+
+/* ---------- Renderers ---------- */
+function renderAll(){ renderOverview(); renderTrains(); renderBookings(); renderReports(); }
+function renderOverview(){
+  document.getElementById('statTrains').textContent = state.trains.length;
+  // bookings count after decrypt
+  decryptBookingsIfPossible().then(bookings=>{
+    const all = bookings ? bookings.length : 0;
+    document.getElementById('statBookings').textContent = all;
+    const revenue = bookings ? bookings.filter(b=>b.status==='CONFIRMED').reduce((s,b)=>s+(b.fare||0),0) : 0;
+    document.getElementById('statRevenue').textContent = '₹'+revenue;
+  });
+}
+function renderTrains(){
+  const tbody = document.getElementById('trainsT'); tbody.innerHTML='';
+  state.trains.forEach(t=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${t.id||'-'}</td><td>${t.name}</td><td>${t.from} → ${t.to}</td><td>₹${t.fare}</td><td>${t.quotas.general}/${t.quotas.ladies}/${t.quotas.senior}/${t.quotas.tatkal}</td>
+      <td><button class="btn btn-ghost" data-id="${t.id}" data-act="edit">Edit</button></td>`;
+    tbody.appendChild(tr);
+  });
+  // wire edit (skipped heavy logic here for brevity)
+}
+
+/* bookings renderer: decrypt bookings first */
+async function decryptBookingsIfPossible(){
+  // we attempt to derive key from stored adminHash? For demo we use stored 'encSalt' and a default pass phrase 'adminpw' if not set.
+  // In this demo, we try to use a cached key in memory (demoKey). If not available, bookings remain encrypted but you can still seed new ones (they will be stored encrypted with new key).
+  if(!state.bookings_enc) return [];
+  if(window._demo_key) {
+    try {
+      return await decryptJSON(window._demo_key, state.bookings_enc);
+    } catch(e){
+      // decryption failed - return empty
+      return [];
+    }
+  }
+  return []; // can't decrypt without key
+}
+
+async function renderBookings(){
+  const tbody = document.getElementById('bookingsT'); tbody.innerHTML='';
+  const bookings = await decryptBookingsIfPossible();
+  bookings.slice().reverse().forEach(b=>{
+    const tr = document.createElement('tr');
+    const pnr = b.pnr || '—';
+    const statusBadge = b.status==='CONFIRMED' ? `<span class="status-badge status-paid">PAID</span>` : `<span class="status-badge status-pending">${b.status}</span>`;
+    tr.innerHTML = `<td>${b.id}</td><td>${b.trainName}</td><td>${b.route}</td><td>₹${b.fare}</td><td>${b.date}</td><td>${pnr}</td><td>${statusBadge}</td>
+      <td>${b.status==='PENDING_PAYMENT' ? `<button class="btn btn-primary" data-act="pay" data-id="${b.id}">Pay</button>` : (b.status==='CONFIRMED' ? `<button class="btn btn-ghost" data-act="view" data-id="${b.id}">View</button>` : '')}</td>`
+    tbody.appendChild(tr);
+  });
+
+  // attach actions
+  tbody.querySelectorAll('button').forEach(btn=>{
+    const id = btn.dataset.id, act=btn.dataset.act;
+    btn.onclick = ()=> {
+      if(act==='pay') openPaymentModal(id);
+      if(act==='view') alert('Booking: '+id);
+    }
+  });
+}
+
+/* render reports */
+async function renderReports(){
+  const bookings = await decryptBookingsIfPossible();
+  const total = bookings.length;
+  const revenue = bookings.filter(b=>b.status==='CONFIRMED').reduce((s,b)=>s+(b.fare||0),0);
+  const routeCounts = {};
+  bookings.forEach(b=> { if(b.status!=='CANCELLED') routeCounts[b.route]=(routeCounts[b.route]||0)+1 });
+  const top = Object.entries(routeCounts).sort((a,b)=>b[1]-a[1]).slice(0,5).map(r=>`${r[0]} (${r[1]})`).join(', ')||'—';
+  document.getElementById('reportText').innerHTML = `Total bookings: ${total} • Revenue: ₹${revenue} • Top routes: ${top}`;
+}
+
+/* ---------- Booking helpers ---------- */
+/* save bookings encrypted with current demo key if exists, else store plaintext in encrypted field with random key */
+async function saveBookingsEncrypted(bookings){
+  // if we have a key in memory, use it; otherwise create a random salt and use a default test pass to derive key then store salt
+  if(!window._demo_key){
+    // generate random salt and derive from default pass 'demo_pass' (NOTE: demo only)
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const saltB64 = btoa(String.fromCharCode(...salt));
+    state.settings.encSalt = saltB64;
+    window._demo_pass = 'demo_pass'; // demo pass
+    window._demo_key = await deriveKey(window._demo_pass, state.settings.encSalt);
+  }
+  state.bookings_enc = await encryptJSON(window._demo_key, bookings);
+  saveState();
+}
+
+/* add booking helper */
+async function addBooking({trainId, trainName, route, fare, date, status='PENDING_PAYMENT'}){
+  const bookings = await decryptBookingsIfPossible() || [];
+  const id = 'BKG'+Math.floor(Math.random()*900000);
+  const item = { id, trainId, trainName, route, fare, date, status, pnr: null };
+  bookings.push(item);
+  await saveBookingsEncrypted(bookings);
+  renderAll();
+  return item;
+}
+
+/* ---------- Payment modal & flow ---------- */
+function openModal(html){
+  const root = document.getElementById('modalRoot'); root.innerHTML = `<div class="modal-back"><div class="modal">${html}</div></div>`;
+  root.querySelector('.modal-back').onclick = (e)=>{ if(e.target===root.querySelector('.modal-back')) root.innerHTML=''; };
+}
+
+function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
+
+/* open payment UI for booking id */
+async function openPaymentModal(bookingId){
+  const bookings = await decryptBookingsIfPossible();
+  const bk = bookings.find(b=>b.id===bookingId);
+  if(!bk){ alert('Booking not found or encrypted (cannot pay)'); return; }
+  openModal(`
+    <h3>Pay for booking ${bk.id}</h3>
+    <div class="field"><label>Train</label><div>${bk.trainName} • ${bk.route}</div></div>
+    <div class="field"><label>Amount</label><div>₹${bk.fare}</div></div>
+    <div class="field"><label>Payment Method</label>
+      <select id="payMethod"><option value="upi">UPI</option><option value="card">Card</option><option value="netbanking">Netbanking</option><option value="wallet">Wallet</option></select>
+    </div>
+    <div id="payExtra"></div>
+    <div style="text-align:right;margin-top:10px"><button id="payBtn" class="btn btn-primary">Pay Now</button> <button id="cancelPay" class="btn btn-ghost">Cancel</button></div>
+  `);
+
+  const payMethod = document.getElementById('payMethod');
+  const payExtra = document.getElementById('payExtra');
+  payMethod.onchange = ()=> renderPayExtra(payMethod.value, payExtra);
+  renderPayExtra(payMethod.value, payExtra);
+
+  document.getElementById('cancelPay').onclick = closeModal;
+  document.getElementById('payBtn').onclick = async ()=>{
+    // simple validation for card/upi if needed
+    const method = payMethod.value;
+    // simulate gateway processing delay
+    document.getElementById('payBtn').textContent = 'Processing...'; document.getElementById('payBtn').disabled = true;
+    await new Promise(r=>setTimeout(r,1200));
+    // mark booking paid and generate PNR
+    bk.status = 'CONFIRMED';
+    bk.pnr = genPNR();
+    // Save bookings back encrypted
+    await saveBookingsEncrypted(bookings);
+    closeModal();
+    alert(`Payment successful. PNR: ${bk.pnr}`);
+    renderAll();
+  };
+}
+
+function renderPayExtra(method, container){
+  if(!container) return;
+  if(method==='card'){
+    container.innerHTML = `<div class="field"><label>Card Number</label><input id="cardNum" placeholder="XXXX-XXXX-XXXX-XXXX"></div><div class="row"><div><label>Expiry</label><input id="cardExp" placeholder="MM/YY"></div><div><label>CVV</label><input id="cardCvv" placeholder="CVV"></div></div>`;
+  } else if(method==='upi'){
+    container.innerHTML = `<div class="field"><label>UPI ID</label><input id="upiId" placeholder="your@upi"></div>`;
+  } else if(method==='netbanking'){
+    container.innerHTML = `<div class="field"><label>Bank</label><select id="nbank"><option>HDFC</option><option>ICICI</option><option>SBI</option><option>AXIS</option></select></div>`;
+  } else if(method==='wallet'){
+    container.innerHTML = `<div class="field"><label>Wallet</label><select id="wallet"><option>PhonePe</option><option>Google Pay</option><option>Paytm</option></select></div>`;
+  } else container.innerHTML='';
+}
+
+/* ---------- Admin security: set password & derive key ---------- */
+document.getElementById('btnSetPass').onclick = async ()=>{
+  const pass = document.getElementById('newPass').value.trim();
+  if(!pass) return alert('Enter a password');
+  const hash = await hashPass(pass);
+  state.settings.adminHash = hash;
+  // For demo, create random salt and derive key and keep in memory
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  state.settings.encSalt = btoa(String.fromCharCode(...salt));
+  window._demo_pass = pass; // keep in memory for demo
+  window._demo_key = await deriveKey(pass, state.settings.encSalt);
+  // if bookings present in plaintext, encrypt them
+  const bookings = await decryptBookingsIfPossible(); // tries to decrypt if possible (likely empty)
+  await saveBookingsEncrypted(bookings || []);
+  saveState();
+  alert('Admin password set and encryption key initialized (demo).');
+  renderAll();
+};
+
+/* Reset encryption key (dangerous in production) */
+document.getElementById('btnResetKey').onclick = async ()=>{
+  if(!confirm('This will regenerate encryption salt and you may lose access to existing encrypted bookings. Continue?')) return;
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  state.settings.encSalt = btoa(String.fromCharCode(...salt));
+  // create a new demo key from default pass if any
+  if(window._demo_pass) window._demo_key = await deriveKey(window._demo_pass, state.settings.encSalt);
+  // re-encrypt current (decrypted) bookings under new key
+  const bookings = await decryptBookingsIfPossible();
+  await saveBookingsEncrypted(bookings || []);
+  saveState();
+  alert('Encryption key reset (demo).');
+};
+
+/* ---------- Seeding and actions ---------- */
+document.getElementById('btnSeedBooking').onclick = async ()=>{
+  const t = state.trains[Math.floor(Math.random()*state.trains.length)];
+  if(!t) return alert('No trains');
+  const bk = await addBooking({trainId:t.id, trainName:t.name, route:`${t.from}-${t.to}`, fare:t.fare, date: new Date().toISOString().slice(0,10), status:'PENDING_PAYMENT'});
+  alert('Added pending booking: '+bk.id);
+  renderAll();
+};
+document.getElementById('btnSeedPaid').onclick = async ()=>{
+  const t = state.trains[Math.floor(Math.random()*state.trains.length)];
+  if(!t) return alert('No trains');
+  const bk = await addBooking({trainId:t.id, trainName:t.name, route:`${t.from}-${t.to}`, fare:t.fare, date: new Date().toISOString().slice(0,10), status:'CONFIRMED'});
+  // mark paid + PNR
+  const bookings = await decryptBookingsIfPossible();
+  const item = bookings.find(b=>b.id===bk.id);
+  item.pnr = genPNR();
+  item.status = 'CONFIRMED';
+  await saveBookingsEncrypted(bookings);
+  alert('Added paid booking: '+bk.id+' PNR: '+item.pnr);
+  renderAll();
+};
+document.getElementById('btnClear').onclick = async ()=> {
+  if(!confirm('Clear all bookings?')) return;
+  await saveBookingsEncrypted([]);
+  renderAll();
+};
+
+/* ---------- utility: deriveKey wrapper ---------- */
+async function deriveKey(pass, saltB64){
+  const salt = fromB64(saltB64);
+  const ik = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations:100000, hash:'SHA-256'}, ik, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  return key;
+}
+
+/* base64 helpers used earlier (redefine here) */
+function b64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))) }
+function fromB64(s){ return Uint8Array.from(atob(s), c=>c.charCodeAt(0)) }
+
+/* ---------- initial decrypt attempt ---------- */
+// if an encSalt exists and window._demo_pass not set, we cannot decrypt. Offer admin to set password to decrypt.
+(async ()=> {
+  // If there is a stored salt but no in-memory key, derive from default demo pass if present in memory
+  if(state.settings && state.settings.encSalt && window._demo_pass){
+    window._demo_key = await deriveKey(window._demo_pass, state.settings.encSalt);
+  }
+  renderAll();
+})();
+
+/* ---------- attach menu handlers ---------- */
+document.querySelectorAll('nav .menu button').forEach(btn=>{
+  btn.onclick = ()=> {
+    document.querySelectorAll('nav .menu button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = btn.dataset.panel;
+    showPanel(panel);
+  };
+});
+
+/* helper: addBooking wrapper used earlier */
+async function addBooking({trainId, trainName, route, fare, date, status='PENDING_PAYMENT'}) {
+  // fetch existing decrypted bookings (or create empty)
+  let bookings = await decryptBookingsIfPossible();
+  bookings = bookings || [];
+  const id = 'BKG'+Math.floor(Math.random()*900000);
+  const newB = { id, trainId, trainName, route, fare, date, status, pnr: status==='CONFIRMED' ? genPNR() : null };
+  bookings.push(newB);
+  await saveBookingsEncrypted(bookings);
+  return newB;
+}
+
+/* helper: decrypt function that uses window._demo_key if available; else returns [] */
+async function decryptBookingsIfPossible(){
+  if(!state.bookings_enc) return [];
+  if(window._demo_key) {
+    try { return await decryptJSON(window._demo_key, state.bookings_enc); }
+    catch(e){ console.warn('Decrypt failed', e); return []; }
+  }
+  return []; // can't decrypt without key
+}
+
+/* ---------- small helpers redefined for scope ---------- */
+async function encryptJSON(key, obj){ const iv = crypto.getRandomValues(new Uint8Array(12)); const plain = new TextEncoder().encode(JSON.stringify(obj)); const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, plain); return b64(iv)+':'+b64(ct); }
+async function decryptJSON(key, cipherStr){ if(!cipherStr) return null; const [ivB64, ctB64] = cipherStr.split(':'); const iv = fromB64(ivB64); const ct = fromB64(ctB64); const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct); return JSON.parse(new TextDecoder().decode(plain)); }
+
+/* ---------- initial UI render re-run periodically to reflect decrypted bookings if key becomes available ---------- */
+setInterval(renderAll, 1500);
+</script>
+</body>
+</html>

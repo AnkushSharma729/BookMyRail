@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookMyRail – About & Contact</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f7f9;
+      color: #333;
+    }
+
+    /* Header with logo background */
+    header {
+      background: #0077b6 url('logo 1.png') no-repeat center left;
+      background-size: 200px 150px; /* Adjust logo size */
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem 2rem 80px; /* Leave space for logo */
+      position: relative;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      display: inline-block;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      background: white;
+      padding: 25px 30px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    section h2 {
+      color: #0077b6;
+      margin-top: 0;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 5px 0;
+    }
+
+    .contact-info li {
+      display: flex;
+      align-items: center;
+    }
+
+    .contact-info li::before {
+      content: "📌";
+      margin-right: 10px;
+    }
+
+    /* Contact Form Styles */
+    form {
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      background: #0077b6;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005f86;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+      header {
+        padding-left: 60px;
+        background-size: 40px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>BookMyRail</h1>
+</header>
+
+<main>
+  <!-- About Us Section -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>
+      BookMyRail is an innovative online platform designed to make railway ticket booking in India easy, fast, and accessible to everyone. Our mission is to provide a seamless digital experience for travelers while keeping convenience and safety at the forefront.
+    </p>
+    <h3>Why Choose BookMyRail?</h3>
+    <ul>
+      <li>User-Friendly Booking: Book your train tickets quickly through an intuitive web interface.</li>
+      <li>Secure Payments: Pay safely using multiple payment options.</li>
+      <li>Cash on Delivery (COD): For users without net banking or card access, COD ensures everyone can book online.</li>
+      <li>Comprehensive Ticket Management: Check PNR status, view bookings, cancel tickets, and get alerts—all in one place.</li>
+      <li>Reliable Customer Support: Our dedicated support team assists you at every step of your journey.</li>
+    </ul>
+  </section>
+
+  <!-- Contact Us Section -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>We value your feedback and are here to help you with any queries or support regarding your bookings.</p>
+    <ul class="contact-info">
+      <li>Phone: +91-12345-67890</li>
+      <li>Email: <a href="mailto:support@bookmyrail.com">support@bookmyrail.com</a></li>
+      <li>Office Address: BookMyRail Pvt. Ltd., 123 Main Street, Delhi, India – 110001</li>
+      <li>Support Hours: Monday – Saturday, 9:00 AM – 6:00 PM</li>
+    </ul>
+
+    <!-- Contact Form -->
+    <form id="contactForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+      </div>
+      <div class="form-group">
+        <label for="emailInput">Email</label>
+        <input type="email" id="emailInput" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" placeholder="Enter subject" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Write your message here..." required></textarea>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+</main>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('emailInput').value,
+      subject: document.getElementById('subject').value,
+      message: document.getElementById('message').value
+    };
+
+    console.log("Contact Form Submission:", formData);
+
+    alert('Thank you! Your message has been submitted successfully.');
+    e.target.reset();
+  });
+</script>
+
+</body>
+</html>

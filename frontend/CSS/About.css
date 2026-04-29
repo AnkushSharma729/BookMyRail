@@ -1,0 +1,120 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f7f9;
+  color: #333;
+}
+
+/* Header with logo background */
+header {
+  background: #0077b6 url('../img/logo 1.png') no-repeat center left;
+  background-size: 200px 150px; /* Adjust logo size */
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem 2rem 80px; /* Leave space for logo */
+  position: relative;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  display: inline-block;
+}
+
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+section {
+  background: white;
+  padding: 25px 30px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+section h2 {
+  color: #0077b6;
+  margin-top: 0;
+}
+
+p {
+  line-height: 1.6;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  padding: 5px 0;
+}
+
+.contact-info li {
+  display: flex;
+  align-items: center;
+}
+
+.contact-info li::before {
+  content: "📌";
+  margin-right: 10px;
+}
+
+/* Contact Form Styles */
+form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005f86;
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  header {
+    padding-left: 60px;
+    background-size: 40px 40px;
+  }
+}
